@@ -85,11 +85,9 @@ const Profile = () => {
   async function deleteData(item) {
     const data = { reason: reject, surname: item.surname };
     if (reject !== "") {
-      const res = await axios
-        .delete(`/schedule/${item.id}`, data)
-        .then(() => console.log("ลบข้อมูล"))
-        .catch((err) => console.log(err));
-      loadlist();
+    await axios.delete(`/schedule/${item.id}`, {data:data});
+
+    await loadlist();
       setValidate(false);
       setReject("");
       handleRejectDialogClose();
@@ -217,9 +215,9 @@ const Profile = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {data.map((item, index) => (
+                    {data.map((item) => (
                       <>
-                        <StyledTableRow key={index}>
+                        <StyledTableRow key={item.id}>
                           <StyledTableCell component="th" scope="row">
                             {item.surname}
                           </StyledTableCell>
@@ -253,7 +251,7 @@ const Profile = () => {
                           <StyledTableCell align="right">
                             <Button
                               disabled={
-                                item.status == "รอดำเนินการ" ? false : true
+                                item.status === "รอดำเนินการ" ? false : true
                               }
                               variant="contained"
                               startIcon={<ContentPasteIcon />}
