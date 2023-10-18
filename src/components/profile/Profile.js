@@ -46,18 +46,18 @@ const Profile = () => {
   const [approve, setApprove] = useState("");
   const [reject, setReject] = useState("");
   const [item, setItem] = useState("");
-  const [deleteId, setDeleteId] = useState("");
+  const [deleteItem, setDeleteItem] = useState({});
   const [warning, setWarning] = useState(false);
   const [validate, setValidate] = useState(false);
 
-  const handleRejectDialogOpen = (id) => {
+  const handleRejectDialogOpen = (item) => {
     setRejectDialog(true);
-    setDeleteId(id);
+    setDeleteItem(item);
   };
 
   const handleRejectDialogClose = () => {
     setRejectDialog(false);
-    setDeleteId("");
+    setDeleteItem("");
   };
 
   const handleClickOpen = (item) => {
@@ -82,21 +82,17 @@ const Profile = () => {
   }
 
   console.log("reject reason", reject);
-
-  async function deleteData(id) {
-    const data = {
-      reason: reject,
-    };
+  async function deleteData(item) {
+    const data = { reason: reject, surname: item.surname };
     if (reject !== "") {
-      const reject = await axios
-        .delete(`/schedule/${id}`, { data: data })
+      const res = await axios
+        .delete(`/schedule/${item.id}`, data)
         .then(() => console.log("ลบข้อมูล"))
         .catch((err) => console.log(err));
       loadlist();
       setValidate(false);
       setReject("");
       handleRejectDialogClose();
-      console.log({ reject });
     } else {
       setValidate(true);
     }
@@ -128,9 +124,10 @@ const Profile = () => {
 
   async function loadlist() {
     const list = await axios.get("/schedule");
-    // if (list?.data?.lenght <= 0) {
-    //   return;
-    // }
+    if (list?.data?.lenght <= 0) {
+      setData([]);
+      return;
+    }
 
     // const filterData = list.data.filter((item) => item.status == "รอดำเนินการ");
     setData(list.data);
@@ -255,7 +252,9 @@ const Profile = () => {
                           </StyledTableCell>
                           <StyledTableCell align="right">
                             <Button
-                            disabled={item.status == "รอดำเนินการ" ? false:true}
+                              disabled={
+                                item.status == "รอดำเนินการ" ? false : true
+                              }
                               variant="contained"
                               startIcon={<ContentPasteIcon />}
                               color="primary"
@@ -269,7 +268,7 @@ const Profile = () => {
                               variant="contained"
                               startIcon={<DeleteIcon />}
                               color="error"
-                              onClick={() => handleRejectDialogOpen(item.id)}
+                              onClick={() => handleRejectDialogOpen(item)}
                             >
                               ลบข้อมูล
                             </Button>
@@ -331,7 +330,7 @@ const Profile = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => deleteData(deleteId)}>ยืนยัน</Button>
+          <Button onClick={() => deleteData(deleteItem)}>ยืนยัน</Button>
           <Button onClick={handleRejectDialogClose}>ปิดหน้าต่าง</Button>
         </DialogActions>
       </Dialog>
