@@ -20,6 +20,8 @@ const Driver = () => {
   const [objective, setObjective] = useState("");
   const [place, setPlace] = useState("");
   const [enddate, setEnddate] = useState("");
+  console.log(startTime,endTime)
+
 
   function submit() {
     const post = {
@@ -32,6 +34,7 @@ const Driver = () => {
       startTime: startTime,
       endTime: endTime,
       place: place,
+      time: `${startTime} - ${endTime}`
     };
     if (
       !(
@@ -84,7 +87,7 @@ const Driver = () => {
             <MenuItem value="รถบรรทุกหกล้อ">รถบรรทุกหกล้อ</MenuItem>
           </Select>
         </div>
-        <p className="P">วันที่เริ่มต้น-วันที่สิ่นสุด</p>
+        <p className="P">วันที่เริ่มต้น-วันที่สิ้นสุด</p>
         <div className="date__box">
           <div className="input__margin">
             <TextField
