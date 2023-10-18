@@ -128,12 +128,12 @@ const Profile = () => {
 
   async function loadlist() {
     const list = await axios.get("/schedule");
-    if (list?.data?.lenght <= 0) {
-      return;
-    }
+    // if (list?.data?.lenght <= 0) {
+    //   return;
+    // }
 
-    const filterData = list.data.filter((item) => item.status == "รอดำเนินการ");
-    setData(filterData);
+    // const filterData = list.data.filter((item) => item.status == "รอดำเนินการ");
+    setData(list.data);
   }
   useEffect(() => {
     loadlist();
@@ -255,6 +255,7 @@ const Profile = () => {
                           </StyledTableCell>
                           <StyledTableCell align="right">
                             <Button
+                            disabled={item.status == "รอดำเนินการ" ? false:true}
                               variant="contained"
                               startIcon={<ContentPasteIcon />}
                               color="primary"
