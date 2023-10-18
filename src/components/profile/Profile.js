@@ -45,7 +45,7 @@ const Profile = () => {
   const [rejectDialog, setRejectDialog] = useState(false)
   const [approve, setApprove] = useState('')
   const [reject, setReject] = useState('')
-  const [itemId, setItemId] = useState('')
+  const [item, setItem] = useState('')
   const [deleteId, setDeleteId] = useState('')
   const [warning, setWarning] = useState(false)
   const [validate, setValidate] = useState(false)
@@ -60,14 +60,14 @@ const Profile = () => {
     setDeleteId('')
   }
 
-  const handleClickOpen = id => {
+  const handleClickOpen = item => {
     setOpen(true)
-    setItemId(id)
+    setItem(item)
   }
 
   const handleClose = () => {
     setOpen(false)
-    setItemId('')
+    setItem('')
   }
 
   function handleKeyPress () {
@@ -102,14 +102,19 @@ const Profile = () => {
     }
   }
 
-  async function approveData (id) {
+  async function approveData (item) {
     const data = {
       status: 'อนุมัติคำร้อง',
-      approve: approve
+      approve: approve,
+      department:item.department,
+      surname:item.surname,
+      type:item.type
+      
     }
+
     if (approve !== '') {
       const edit = await axios
-        .put(`schedule/${id}`, data)
+        .put(`schedule/${item.id}`,data)
         .then(() => console.log('อนุมัติ'))
         .catch(err => console.log(err))
       await loadlist()
@@ -254,7 +259,7 @@ const Profile = () => {
                               variant='contained'
                               startIcon={<ContentPasteIcon />}
                               color='primary'
-                              onClick={() => handleClickOpen(item.id)}
+                              onClick={() => handleClickOpen(item)}
                             >
                               ลงชื่อผู้อนุมัติ
                             </Button>
@@ -301,7 +306,7 @@ const Profile = () => {
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={() => approveData(itemId)}>อนุมัติคำขอ</Button>
+          <Button onClick={() => approveData(item)}>อนุมัติคำขอ</Button>
           <Button onClick={handleClose}>ปิดหน้าต่าง</Button>
         </DialogActions>
       </Dialog>

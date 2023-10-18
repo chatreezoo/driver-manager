@@ -34,7 +34,7 @@ const Driver = () => {
       startTime: startTime,
       endTime: endTime,
       place: place,
-      time: `${startTime} - ${endTime}`
+      time: `${startTime}- ${endTime}`
     };
     if (
       !(
@@ -148,7 +148,7 @@ const Driver = () => {
               fullWidth
               value={depart}
               onChange={(e) => setDepart(e.target.value)}
-              type="number"
+              
             />
           </div>
           <div className="input__margin">
