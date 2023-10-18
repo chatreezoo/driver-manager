@@ -36,7 +36,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({}));
 
 const Profile = () => {
   const [data, setData] = useState([]);
-  const [isAdmin, setIsAdmin] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const ID = "12345";
