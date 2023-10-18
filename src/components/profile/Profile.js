@@ -1,181 +1,180 @@
-import React, { useState, useEffect } from 'react'
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos'
-import Button from '@mui/material/Button'
-import { Link } from 'react-router-dom'
-import './Profile.css'
-import axios from '../../axios'
-import { styled } from '@mui/material/styles'
-import Table from '@mui/material/Table'
-import TableBody from '@mui/material/TableBody'
-import TableCell, { tableCellClasses } from '@mui/material/TableCell'
-import TableContainer from '@mui/material/TableContainer'
-import TableHead from '@mui/material/TableHead'
-import TableRow from '@mui/material/TableRow'
-import Paper from '@mui/material/Paper'
-import DeleteIcon from '@mui/icons-material/Delete'
-import ContentPasteIcon from '@mui/icons-material/ContentPaste'
-import Dialog from '@mui/material/Dialog'
-import DialogActions from '@mui/material/DialogActions'
-import DialogContent from '@mui/material/DialogContent'
-import DialogTitle from '@mui/material/DialogTitle'
-import { TextField } from '@mui/material'
-import LoginIcon from '@mui/icons-material/Login'
-import * as dayjs from 'dayjs'
+import React, { useState, useEffect } from "react";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import Button from "@mui/material/Button";
+import { Link } from "react-router-dom";
+import "./Profile.css";
+import axios from "../../axios";
+import { styled } from "@mui/material/styles";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell, { tableCellClasses } from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import DeleteIcon from "@mui/icons-material/Delete";
+import ContentPasteIcon from "@mui/icons-material/ContentPaste";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
+import { TextField } from "@mui/material";
+import LoginIcon from "@mui/icons-material/Login";
+import * as dayjs from "dayjs";
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
   },
   [`&.${tableCellClasses.body}`]: {
-    fontSize: 14
-  }
-}))
+    fontSize: 14,
+  },
+}));
 
-const StyledTableRow = styled(TableRow)(({ theme }) => ({}))
+const StyledTableRow = styled(TableRow)(({ theme }) => ({}));
 
 const Profile = () => {
-  const [data, setData] = useState([])
-  const [isAdmin, setIsAdmin] = useState(true)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
-  const ID = '12345'
-  const PASSWORD = '12345'
-  const [open, setOpen] = useState(false)
-  const [rejectDialog, setRejectDialog] = useState(false)
-  const [approve, setApprove] = useState('')
-  const [reject, setReject] = useState('')
-  const [item, setItem] = useState('')
-  const [deleteId, setDeleteId] = useState('')
-  const [warning, setWarning] = useState(false)
-  const [validate, setValidate] = useState(false)
+  const [data, setData] = useState([]);
+  const [isAdmin, setIsAdmin] = useState(true);
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const ID = "12345";
+  const PASSWORD = "12345";
+  const [open, setOpen] = useState(false);
+  const [rejectDialog, setRejectDialog] = useState(false);
+  const [approve, setApprove] = useState("");
+  const [reject, setReject] = useState("");
+  const [item, setItem] = useState("");
+  const [deleteId, setDeleteId] = useState("");
+  const [warning, setWarning] = useState(false);
+  const [validate, setValidate] = useState(false);
 
-  const handleRejectDialogOpen = id => {
-    setRejectDialog(true)
-    setDeleteId(id)
-  }
+  const handleRejectDialogOpen = (id) => {
+    setRejectDialog(true);
+    setDeleteId(id);
+  };
 
   const handleRejectDialogClose = () => {
-    setRejectDialog(false)
-    setDeleteId('')
-  }
+    setRejectDialog(false);
+    setDeleteId("");
+  };
 
-  const handleClickOpen = item => {
-    setOpen(true)
-    setItem(item)
-  }
+  const handleClickOpen = (item) => {
+    setOpen(true);
+    setItem(item);
+  };
 
   const handleClose = () => {
-    setOpen(false)
-    setItem('')
-  }
+    setOpen(false);
+    setItem("");
+  };
 
-  function handleKeyPress () {
+  function handleKeyPress() {
     if (ID === username && password === PASSWORD) {
-      setIsAdmin(true)
+      setIsAdmin(true);
     }
   }
-  function login () {
+  function login() {
     if (ID === username && password === PASSWORD) {
-      setIsAdmin(true)
+      setIsAdmin(true);
     }
   }
 
-  console.log('reject reason', reject)
+  console.log("reject reason", reject);
 
-  async function deleteData (id) {
+  async function deleteData(id) {
     const data = {
-      reason: reject
-    }
-    if (reject !== '') {
+      reason: reject,
+    };
+    if (reject !== "") {
       const reject = await axios
-        .delete(`schedule/${id}`, {data:data})
-        .then(() => console.log('ลบข้อมูล'))
-        .catch(err => console.log(err))
-      loadlist()
-      setValidate(false)
-      setReject('')
-      handleRejectDialogClose()
-      console.log({ reject })
+        .delete(`/schedule/${id}`, { data: data })
+        .then(() => console.log("ลบข้อมูล"))
+        .catch((err) => console.log(err));
+      loadlist();
+      setValidate(false);
+      setReject("");
+      handleRejectDialogClose();
+      console.log({ reject });
     } else {
-      setValidate(true)
+      setValidate(true);
     }
   }
 
-  async function approveData (item) {
+  async function approveData(item) {
     const data = {
-      status: 'อนุมัติคำร้อง',
+      status: "อนุมัติคำร้อง",
       approve: approve,
-      department:item.department,
-      surname:item.surname,
-      type:item.type
-      
-    }
+      department: item.department,
+      surname: item.surname,
+      type: item.type,
+    };
 
-    if (approve !== '') {
+    if (approve !== "") {
       const edit = await axios
-        .put(`schedule/${item.id}`,data)
-        .then(() => console.log('อนุมัติ'))
-        .catch(err => console.log(err))
-      await loadlist()
-      setWarning(false)
-      setApprove('')
-      handleClose()
-      console.log({ edit })
+        .put(`/schedule/${item.id}`, data)
+        .then(() => console.log("อนุมัติ"))
+        .catch((err) => console.log(err));
+      await loadlist();
+      setWarning(false);
+      setApprove("");
+      handleClose();
+      console.log({ edit });
     } else {
-      setWarning(true)
+      setWarning(true);
     }
   }
 
-  function loadlist () {
-    axios
-      .get('schedule')
-      .then(res => setData(res.data))
-      .catch(err => console.log(err))
+  async function loadlist() {
+    const list = await axios.get("/schedule");
+    if (list?.data?.lenght <= 0) {
+      return;
+    }
+
+    const filterData = list.data.filter((item) => item.status == "รอดำเนินการ");
+    setData(filterData);
   }
   useEffect(() => {
-    axios
-      .get('schedule')
-      .then(res => setData(res.data))
-      .catch(err => console.log(err))
-  }, [])
+    loadlist();
+  }, []);
 
   return (
-    <div className='profile__page'>
-      <Link to='/'>
-        <div className='Btn__back'>
-          <Button variant='contained' startIcon={<ArrowBackIosIcon />}>
+    <div className="profile__page">
+      <Link to="/">
+        <div className="Btn__back">
+          <Button variant="contained" startIcon={<ArrowBackIosIcon />}>
             ย้อนกลับ
           </Button>
         </div>
       </Link>
       {isAdmin === false ? (
-        <div className='Box__Admin'>
-          <div className='Login'>
+        <div className="Box__Admin">
+          <div className="Login">
             <h1>กรุณากรอกรหัส</h1>
-            <div className='Cl'>
+            <div className="Cl">
               <TextField
-                label='username'
-                color='primary'
+                label="username"
+                color="primary"
                 fullWidth
                 value={username}
-                onChange={e => setUsername(e.target.value)}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
-            <div className='Cl'>
+            <div className="Cl">
               <TextField
-                label='password'
-                color='primary'
+                label="password"
+                color="primary"
                 fullWidth
                 value={password}
-                onChange={e => setPassword(e.target.value)}
-                type='password'
-                onKeyPress={e => handleKeyPress(e)}
+                onChange={(e) => setPassword(e.target.value)}
+                type="password"
+                onKeyPress={(e) => handleKeyPress(e)}
               />
             </div>
-            <div className='Cl'>
+            <div className="Cl">
               <Button
-                variant='contained'
+                variant="contained"
                 startIcon={<LoginIcon />}
                 onClick={login}
               >
@@ -185,90 +184,90 @@ const Profile = () => {
           </div>
         </div>
       ) : (
-        <div className='BOX__Book'>
-          <div className='BOX'>
-            <div className='table__right'>
+        <div className="BOX__Book">
+          <div className="BOX">
+            <div className="table__right">
               <TableContainer component={Paper}>
-                <Table aria-label='customized table'>
+                <Table aria-label="customized table">
                   <TableHead>
                     <TableRow>
                       <StyledTableCell>ชื่อผู้จอง</StyledTableCell>
-                      <StyledTableCell align='right'>แผนก</StyledTableCell>
-                      <StyledTableCell align='right'>ประเภท</StyledTableCell>
-                      <StyledTableCell align='right'>
+                      <StyledTableCell align="right">แผนก</StyledTableCell>
+                      <StyledTableCell align="right">ประเภท</StyledTableCell>
+                      <StyledTableCell align="right">
                         วัดถุประสงค์
                       </StyledTableCell>
-                      <StyledTableCell align='right'>
+                      <StyledTableCell align="right">
                         จุดหมายปลายทาง
                       </StyledTableCell>
-                      <StyledTableCell align='right'>
+                      <StyledTableCell align="right">
                         วันที่เริ่ม
                       </StyledTableCell>
-                      <StyledTableCell align='right'>
+                      <StyledTableCell align="right">
                         วันที่สิ้นสุด
                       </StyledTableCell>
-                      <StyledTableCell align='right'>เวลาเริ่ม</StyledTableCell>
-                      <StyledTableCell align='right'>
+                      <StyledTableCell align="right">เวลาเริ่ม</StyledTableCell>
+                      <StyledTableCell align="right">
                         เวลาสิ้นสุด
                       </StyledTableCell>
-                      <StyledTableCell align='right'>
+                      <StyledTableCell align="right">
                         สถานะคำร้อง
                       </StyledTableCell>
-                      <StyledTableCell align='right'>
+                      <StyledTableCell align="right">
                         ผู้อนุมัติ
                       </StyledTableCell>
-                      <StyledTableCell align='right'>ลบข้อมูล</StyledTableCell>
+                      <StyledTableCell align="right">ลบข้อมูล</StyledTableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {data.map((item, index) => (
                       <>
                         <StyledTableRow key={index}>
-                          <StyledTableCell component='th' scope='row'>
+                          <StyledTableCell component="th" scope="row">
                             {item.surname}
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          <StyledTableCell align="right">
                             {item.department}
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          <StyledTableCell align="right">
                             {item.type}
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          <StyledTableCell align="right">
                             {item.objective}
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          <StyledTableCell align="right">
                             {item.place}
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
-                            {dayjs(item.endDate).format('DD-MM-YYYY')}
+                          <StyledTableCell align="right">
+                            {dayjs(item.endDate).format("DD-MM-YYYY")}
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
-                            {dayjs(item.endDate).format('DD-MM-YYYY')}
+                          <StyledTableCell align="right">
+                            {dayjs(item.endDate).format("DD-MM-YYYY")}
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          <StyledTableCell align="right">
                             {item.startTime}
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          <StyledTableCell align="right">
                             {item.endTime}
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          <StyledTableCell align="right">
                             {item.status}
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          <StyledTableCell align="right">
                             <Button
-                              variant='contained'
+                              variant="contained"
                               startIcon={<ContentPasteIcon />}
-                              color='primary'
+                              color="primary"
                               onClick={() => handleClickOpen(item)}
                             >
                               ลงชื่อผู้อนุมัติ
                             </Button>
                           </StyledTableCell>
-                          <StyledTableCell align='right'>
+                          <StyledTableCell align="right">
                             <Button
-                              variant='contained'
+                              variant="contained"
                               startIcon={<DeleteIcon />}
-                              color='error'
+                              color="error"
                               onClick={() => handleRejectDialogOpen(item.id)}
                             >
                               ลบข้อมูล
@@ -287,22 +286,22 @@ const Profile = () => {
       <Dialog
         open={open}
         onClose={handleClose}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id='alert-dialog-title'>
-          {'กรุณากรอกชื่อผู้อนุมัติ'}
+        <DialogTitle id="alert-dialog-title">
+          {"กรุณากรอกชื่อผู้อนุมัติ"}
         </DialogTitle>
         <DialogContent>
           {warning === true ? (
-            <p style={{ color: 'red' }}>กรุณากรอกข้อมูล</p>
+            <p style={{ color: "red" }}>กรุณากรอกข้อมูล</p>
           ) : null}
           <TextField
-            color='primary'
+            color="primary"
             fullWidth
-            label='ลงชื่อผู้อนุมติ'
+            label="ลงชื่อผู้อนุมติ"
             value={approve}
-            onChange={e => setApprove(e.target.value)}
+            onChange={(e) => setApprove(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
@@ -314,20 +313,20 @@ const Profile = () => {
       <Dialog
         open={rejectDialog}
         onClose={handleRejectDialogClose}
-        aria-labelledby='alert-dialog-title'
-        aria-describedby='alert-dialog-description'
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
       >
-        <DialogTitle id='alert-dialog-title'>{'ปฏิเสธคำขอ'}</DialogTitle>
+        <DialogTitle id="alert-dialog-title">{"ปฏิเสธคำขอ"}</DialogTitle>
         <DialogContent>
           {validate === true ? (
-            <p style={{ color: 'red' }}>กรุณากรอกข้อมูล</p>
+            <p style={{ color: "red" }}>กรุณากรอกข้อมูล</p>
           ) : null}
           <TextField
-            color='primary'
+            color="primary"
             fullWidth
-            label='เหตุผลที่ปฏิเสธคำขอ'
+            label="เหตุผลที่ปฏิเสธคำขอ"
             value={reject}
-            onChange={e => setReject(e.target.value)}
+            onChange={(e) => setReject(e.target.value)}
           />
         </DialogContent>
         <DialogActions>
@@ -336,7 +335,7 @@ const Profile = () => {
         </DialogActions>
       </Dialog>
     </div>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;
